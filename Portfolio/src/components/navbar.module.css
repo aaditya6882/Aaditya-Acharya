@@ -1,0 +1,73 @@
+@import "../vars.css";
+.navbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 61px;
+  margin: 0 10%;
+  z-index: 2;
+}
+.title {
+  font-size: 30px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--color-text);
+}
+.menu {
+  display: flex;
+}
+.menuitem {
+  display: flex;
+  gap: 47px;
+  list-style: none;
+}
+.menuitem a {
+  text-decoration: none;
+  color: var(--color-text);
+  font-size: 25px;
+}
+.menuBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: none;
+}
+@media screen and (max-width: 900px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 2;
+  }
+  .menu {
+    position: absolute;
+    right: 0;
+    margin-right: 10%;
+    flex-direction: column;
+    gap: 11px;
+    align-items: flex-end;
+    z-index: 2;
+  }
+  .menuBtn {
+    display: block;
+    cursor: pointer;
+  }
+  .menuitem {
+    display: none;
+    flex-direction: column;
+    gap: 13px;
+    align-items: center;
+    border-radius: 10px;
+    background: rgb(25, 55, 109);
+    background: linear-gradient(
+      0deg,
+      rgba(25, 55, 109, 0.2) 0%,
+      rgba(11, 36, 71, 1) 100%
+    );
+    padding: 24px 23px;
+    z-index: 2;
+  }
+  .isOpen {
+    display: flex;
+  }
+}

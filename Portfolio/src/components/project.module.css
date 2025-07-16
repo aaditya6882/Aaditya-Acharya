@@ -1,0 +1,30 @@
+@import "../vars.css";
+.projectsSection{
+    padding: 40px 20px;
+    background-color: var(--color-bg);
+    text-align: center;
+}
+.projectsGrid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+.heading{
+    margin: 24px 0;
+    font-size: 50px;
+}
+.projectCard{
+background: black;
+padding: 20px;
+box-shadow: 0 4px 12px black;
+border-radius: 20px;
+}
+.projectCard a {
+  display: inline-block;
+  margin-top: 12px;
+  color: skyblue;
+  text-decoration: none;
+}
+.projectCard a:hover{
+    text-decoration: underline;
+}
