@@ -1,60 +1,91 @@
-import React from 'react';
-import styles from './Project.module.css';
+import React from "react";
+import styles from "./project.module.css";
 
 export const Projects = () => {
   const projectList = [
     {
-        title: 'Portfolio Website',
-        description: 'A personal portfolio built with React and CSS Modules.',
-        link: '#'
+      title: "Vehicle Rental System",
+      description:
+        "A full-stack vehicle rental system for browsing vehicles, managing rentals, and handling backend data with Express and PostgreSQL.",
+      tags: ["HTML", "CSS", "JavaScript", "Node.js", "Express", "PostgreSQL"],
+      link: "#contact",
     },
     {
-        title: 'Weather App',
-        description: 'A real-time weather app using OpenWeatherMap API.',
-        link: 'https://github.com/aaditya6882/weather-app'
+      title: "Classification and Regression",
+      description:
+        "A machine learning project focused on classification and regression techniques for prediction, evaluation, and data-driven analysis.",
+      tags: ["Python", "Machine Learning", "Classification", "Regression"],
+      link: "#contact",
     },
     {
-        title: 'Banking System',
-        description: 'A simple Banking system using java.',
-        link: '#'
+      title: "Clinical Appointment System",
+      description:
+        "A clinical appointment system built with Core PHP, HTML, and CSS to manage patient appointment requests and clinic scheduling workflows.",
+      tags: ["Core PHP", "HTML", "CSS", "Web App"],
+      link: "#contact",
     },
     {
-        title: 'Car Driving',
-        description: 'A simple 3D Application using unity and c#.',
-        link: '#'
+      title: "To-Do Application",
+      description:
+        "A full-stack to-do application using Node.js, HTML, CSS, JavaScript, and MongoDB for creating, updating, and organizing tasks.",
+      tags: ["Node.js", "JavaScript", "MongoDB", "HTML", "CSS"],
+      link: "#contact",
     },
     {
-        title: 'Sikshya Sapana',
-        description: 'A simple website using html and css.',
-        link: '#'
+      title: "Weather App",
+      description:
+        "A real-time weather app that uses the OpenWeatherMap API to show live temperature and weather conditions.",
+      tags: ["API", "JavaScript", "UI"],
+      link: "#contact",
     },
     {
-        title: 'MovieFinder',
-        description: 'A simple website using html, css and javaScript to find the movie by searching the name.',
-        link: 'https://aaditya6882.github.io/movie-app/'
+      title: "Banking System",
+      description:
+        "A banking system built with Spring Boot, focusing on backend structure, account operations, and reliable transaction logic.",
+      tags: ["Java", "Spring Boot", "Backend", "REST APIs"],
+      link: "#contact",
     },
     {
-        title: 'NaughtsAndCrosses',
-        description: 'A simple noughts and crosses game using python where player plays with computer',
-        link: '#'
+      title: "Car Driving",
+      description:
+        "A Unity 3D driving project built with C# to practice gameplay controls, physics, and scene design.",
+      tags: ["Unity", "C#", "3D"],
+      link: "#contact",
     },
     {
-        title: 'CeaserCyper',
-        description: 'A simple python project where user can encrypt and decrypt message',
-        link: '#'
-    }
+      title: "Noughts and Crosses",
+      description:
+        "A Python game where the player competes against the computer, built to practice logic and control flow.",
+      tags: ["Python", "Game Logic", "CLI"],
+      link: "#contact",
+    },
+    {
+      title: "Caesar Cipher",
+      description:
+        "A Python encryption and decryption tool that demonstrates string handling and classic cipher logic.",
+      tags: ["Python", "Encryption", "Utility"],
+      link: "#contact",
+    },
   ];
 
   return (
-    <section className={styles.projectsSection}>
-      <h2 className={styles.heading}>Projects</h2>
+    <section className={styles.projectsSection} id="projects">
+      <p className={styles.eyebrow}>Selected Work</p>
+      <h2 className={styles.heading}>
+        Projects that show how I learn by building.
+      </h2>
       <div className={styles.projectsGrid}>
-        {projectList.map((project, index) => (
-          <div key={index} className={styles.projectCard}>
+        {projectList.map((project) => (
+          <div key={project.title} className={styles.projectCard}>
             <h3>{project.title}</h3>
             <p>{project.description}</p>
+            <div className={styles.tags}>
+              {project.tags.map((tag) => (
+                <span key={tag}>{tag}</span>
+              ))}
+            </div>
             <a href={project.link} target="_blank" rel="noopener noreferrer">
-              View Project
+              {project.link.startsWith("#") ? "Ask About It" : "View Project"}
             </a>
           </div>
         ))}

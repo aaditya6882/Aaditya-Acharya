@@ -1,63 +1,118 @@
 @import "../vars.css";
+
+.contactSection {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(280px, 1fr);
+  gap: 32px;
+  padding: 72px 10%;
+}
+
+.contactInfo {
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-surface);
+  padding: 34px;
+}
+
+.eyebrow {
+  color: var(--color-accent);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.contactInfo h2 {
+  color: var(--color-text);
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.08;
+}
+
+.contactInfo p {
+  color: var(--color-muted);
+  line-height: 1.65;
+  margin-top: 18px;
+}
+
+.links {
+  display: grid;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.links a {
+  color: var(--color-accent);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
 form {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: var(--color-dark);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-surface);
+  padding: 34px;
 }
 
 input[type="text"],
 input[type="email"],
 textarea {
-  padding: 10px 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
   width: 100%;
-  box-sizing: border-box;
-  background-color: white;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text);
+  font-size: 16px;
+  padding: 13px 14px;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--color-accent);
+  outline: none;
 }
 
 textarea {
+  min-height: 140px;
   resize: vertical;
-  min-height: 100px;
 }
 
 button {
-  padding: 10px 16px;
-  background-color: #007bff;
-  color: white;
+  min-height: 52px;
   border: none;
-  border-radius: 6px;
-  font-size: 16px;
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: var(--color-text);
   cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background: var(--color-primary-strong);
 }
 
 .name {
-  color: white;
+  color: var(--color-text);
+  font-weight: 800;
 }
-@media screen and(max-width: 900px) {
-  form {
-    padding: 16px;
-    margin: 20px;
+
+@media screen and (max-width: 900px) {
+  .contactSection {
+    grid-template-columns: 1fr;
+    padding: 48px 6%;
   }
 
-  input,
-  textarea {
-    font-size: 14px;
-  }
-
-  button {
-    font-size: 14px;
-    padding: 8px 12px;
+  form,
+  .contactInfo {
+    padding: 26px;
   }
 }

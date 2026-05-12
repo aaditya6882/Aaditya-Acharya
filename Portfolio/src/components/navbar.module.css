@@ -1,72 +1,96 @@
 @import "../vars.css";
+
 .navbar {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 61px;
-  margin: 0 10%;
-  z-index: 2;
+  border-bottom: 1px solid var(--color-border);
+  background: rgba(5, 12, 24, 0.82);
+  backdrop-filter: blur(18px);
+  padding: 18px 10%;
 }
+
 .title {
-  font-size: 30px;
-  font-weight: 600;
-  text-decoration: none;
   color: var(--color-text);
+  font-size: 22px;
+  font-weight: 900;
+  text-decoration: none;
 }
+
 .menu {
   display: flex;
 }
+
 .menuitem {
   display: flex;
-  gap: 47px;
+  align-items: center;
+  gap: 28px;
   list-style: none;
 }
+
 .menuitem a {
+  color: var(--color-muted);
+  font-size: 16px;
+  font-weight: 700;
   text-decoration: none;
+}
+
+.menuitem a:hover {
   color: var(--color-text);
-  font-size: 25px;
 }
+
 .menuBtn {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
   display: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
 }
+
+.menuBtn img {
+  width: 24px;
+  height: 24px;
+}
+
 @media screen and (max-width: 900px) {
   .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    z-index: 2;
+    padding: 16px 6%;
   }
+
   .menu {
-    position: absolute;
-    right: 0;
-    margin-right: 10%;
-    flex-direction: column;
-    gap: 11px;
-    align-items: flex-end;
-    z-index: 2;
+    position: relative;
   }
+
   .menuBtn {
-    display: block;
-    cursor: pointer;
-  }
-  .menuitem {
-    display: none;
-    flex-direction: column;
-    gap: 13px;
+    display: inline-flex;
     align-items: center;
-    border-radius: 10px;
-    background: rgb(25, 55, 109);
-    background: linear-gradient(
-      0deg,
-      rgba(25, 55, 109, 0.2) 0%,
-      rgba(11, 36, 71, 1) 100%
-    );
-    padding: 24px 23px;
-    z-index: 2;
+    justify-content: center;
   }
+
+  .menuitem {
+    position: absolute;
+    top: 58px;
+    right: 0;
+    display: none;
+    min-width: 190px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface-strong);
+    padding: 8px;
+  }
+
+  .menuitem a {
+    display: block;
+    padding: 12px;
+  }
+
   .isOpen {
     display: flex;
   }
