@@ -5,6 +5,9 @@ export const Contact = () => {
   const [status, setStatus] = useState("");
   const [isSending, setIsSending] = useState(false);
 
+  const encode = (data) =>
+    new URLSearchParams(data).toString();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -13,31 +16,22 @@ export const Contact = () => {
 
     const form = event.currentTarget;
     const formData = new FormData(event.currentTarget);
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const message = formData.get("message");
-
-    const payload = {
-      access_key: "44c15173-094d-4842-8666-1ccd67e113e2",
-      name,
-      email,
-      message,
-      subject: `${name} - ${message}`,
-      from_name: name,
-    };
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify(payload),
+        body: encode({
+          "form-name": "contact",
+          name: formData.get("name"),
+          email: formData.get("email"),
+          message: formData.get("message"),
+        }),
       });
-      const result = await response.json();
 
-      if (result.success) {
+      if (response.ok) {
         setStatus("Message sent successfully. Thank you!");
         form.reset();
       } else {
