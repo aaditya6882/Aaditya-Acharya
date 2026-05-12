@@ -3,45 +3,12 @@ import style from "./contact.module.css";
 
 export const Contact = () => {
   const [status, setStatus] = useState("");
-  const [isSending, setIsSending] = useState(false);
 
-  const encode = (data) =>
-    new URLSearchParams(data).toString();
-
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    setIsSending(true);
-    setStatus("Sending your message...");
-
-    const form = event.currentTarget;
-    const formData = new FormData(event.currentTarget);
-
-    try {
-      const response = await fetch("/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: encode({
-          "form-name": "contact",
-          name: formData.get("name"),
-          email: formData.get("email"),
-          message: formData.get("message"),
-        }),
-      });
-
-      if (response.ok) {
-        setStatus("Message sent successfully. Thank you!");
-        form.reset();
-      } else {
-        setStatus("Message could not be sent. Please try again.");
-      }
-    } catch {
-      setStatus("Message could not be sent. Please check your connection.");
-    } finally {
-      setIsSending(false);
-    }
+    setStatus("Message noted. Email sending is currently disabled.");
+    event.currentTarget.reset();
   };
 
   return (
@@ -81,9 +48,7 @@ export const Contact = () => {
           Message
         </label>
         <textarea id="message" name="message" required></textarea>
-        <button type="submit" disabled={isSending}>
-          {isSending ? "Sending..." : "Send Message"}
-        </button>
+        <button type="submit">Send Message</button>
         {status && <p className={style.formStatus}>{status}</p>}
       </form>
     </section>
