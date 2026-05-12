@@ -1,14 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./contact.module.css";
 
 export const Contact = () => {
-  const handleSubmit = (event) => {
+  const [status, setStatus] = useState("");
+  const [isSending, setIsSending] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    setIsSending(true);
+    setStatus("Sending your message...");
+
+    const form = event.currentTarget;
     const formData = new FormData(event.currentTarget);
     const name = formData.get("name");
+    const email = formData.get("email");
     const message = formData.get("message");
-    const subjectInput = event.currentTarget.elements._subject;
 
-    subjectInput.value = `${name} - ${message}`;
+    const payload = {
+      access_key: "44c15173-094d-4842-8666-1ccd67e113e2",
+      name,
+      email,
+      message,
+      subject: `${name} - ${message}`,
+      from_name: name,
+    };
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        setStatus("Message sent successfully. Thank you!");
+        form.reset();
+      } else {
+        setStatus("Message could not be sent. Please try again.");
+      }
+    } catch {
+      setStatus("Message could not be sent. Please check your connection.");
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -35,14 +74,7 @@ export const Contact = () => {
           </a>
         </div>
       </div>
-      <form
-        action="https://formsubmit.co/aadiyaacharya6882@gmail.com"
-        method="POST"
-        onSubmit={handleSubmit}
-      >
-        <input type="hidden" name="_subject" value="Portfolio message" />
-        <input type="hidden" name="_template" value="table" />
-        <input type="hidden" name="_captcha" value="false" />
+      <form onSubmit={handleSubmit}>
         <label className={style.name} htmlFor="name">
           Name
         </label>
@@ -55,7 +87,10 @@ export const Contact = () => {
           Message
         </label>
         <textarea id="message" name="message" required></textarea>
-        <button type="submit">Send Message</button>
+        <button type="submit" disabled={isSending}>
+          {isSending ? "Sending..." : "Send Message"}
+        </button>
+        {status && <p className={style.formStatus}>{status}</p>}
       </form>
     </section>
   );
