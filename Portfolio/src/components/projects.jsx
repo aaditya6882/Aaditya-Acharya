@@ -25,13 +25,6 @@ export const Projects = () => {
       link: "#contact",
     },
     {
-      title: "Weather App",
-      description:
-        "A real-time weather app that uses the OpenWeatherMap API to show live temperature and weather conditions.",
-      tags: ["API", "JavaScript", "UI"],
-      link: "#contact",
-    },
-    {
       title: "Banking System",
       description:
         "A banking system built with Spring Boot, focusing on backend structure, account operations, and reliable transaction logic.",
