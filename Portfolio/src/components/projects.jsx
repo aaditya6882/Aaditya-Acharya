@@ -22,7 +22,7 @@ export const Projects = () => {
       description:
         "A full-stack to-do application using Node.js, HTML, CSS, JavaScript, and MongoDB for creating, updating, and organizing tasks.",
       tags: ["Node.js", "JavaScript", "MongoDB", "HTML", "CSS"],
-      link: "#contact",
+      link: "https://todo.acharyaaaditya.com.np",
     },
     {
       title: "Banking System",
