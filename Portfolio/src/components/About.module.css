@@ -75,6 +75,9 @@
     padding: 48px 6%;
   }
 
+  .image {
+    display: none;
+  }
   .about {
     padding: 28px;
   }

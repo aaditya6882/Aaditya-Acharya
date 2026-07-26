@@ -16,6 +16,7 @@ const skills = [
   "C",
   "Unity",
   "Data Science",
+  "Web Development",
   "Problem Solving",
 ];
 

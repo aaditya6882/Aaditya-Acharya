@@ -10,7 +10,7 @@ export const Hero = () => {
         <h1 className={Stylesheet.Name}>Hi, I am Aaditya Acharya.</h1>
         <p className={Stylesheet.description}>
           I build clean web apps, explore data science, and keep turning ideas
-          into useful projects with React, Python, Java, and C#.
+          into useful projects with Mern Stack, Python, Java.
         </p>
         <div className={Stylesheet.actions}>
           <a href="#projects" className={Stylesheet.primaryBtn}>
