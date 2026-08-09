@@ -8,14 +8,14 @@ export const Projects = () => {
       description:
         "A full-stack vehicle rental system for browsing vehicles, managing rentals, and handling backend data with Express and PostgreSQL.",
       tags: ["HTML", "CSS", "JavaScript", "Node.js", "Express", "PostgreSQL"],
-      link: "#contact",
+      link: "https://github.com/Ishuvgiri/Collab-development-main-project-",
     },
     {
       title: "Clinical Appointment System",
       description:
         "A clinical appointment system built with Core PHP, HTML, and CSS to manage patient appointment requests and clinic scheduling workflows.",
       tags: ["Core PHP", "HTML", "CSS", "Web App"],
-      link: "#contact",
+      link: "https://github.com/aaditya6882/fullStack",
     },
     {
       title: "To-Do Application",
@@ -29,7 +29,14 @@ export const Projects = () => {
       description:
         "A banking system built with Spring Boot, focusing on backend structure, account operations, and reliable transaction logic.",
       tags: ["Java", "Spring Boot", "Backend", "REST APIs"],
-      link: "#contact",
+      link: "https://github.com/aaditya6882/SpringBootBankingApplication",
+    },
+    {
+      title: "HelpDesk",
+      description:
+        "A helpdesk system for managing and tracking support tickets with a user-friendly interface and efficient workflow management.",
+      tags: ["MongoDB", "React", "Node.js", "Express"],
+      link: "https://helpdesk.acharyaaaditya.com.np",
     },
   ];
 
