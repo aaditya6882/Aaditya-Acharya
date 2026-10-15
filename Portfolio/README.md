@@ -1,12 +1,47 @@
-# React + Vite
+# Aaditya Acharya Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project has two applications:
 
-Currently, two official plugins are available:
+- `Portfolio`: Vite React frontend.
+- `Portfolio/backend`: Node.js Express API with MongoDB persistence.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Local setup
 
-## Expanding the ESLint configuration
+1. Install frontend dependencies: `npm install` inside `Portfolio`.
+2. Install backend dependencies: `npm install` inside `Portfolio/backend`.
+3. Copy `Portfolio/backend/.env.example` to `Portfolio/backend/.env` and set `MONGODB_URI`, `JWT_SECRET`, `PORT`, and `FRONTEND_URL`.
+4. Set `VITE_API_URL=http://localhost:4000/api` in the frontend environment when using a separate API process.
+5. Start MongoDB or use a MongoDB Atlas connection string.
+6. Start the API with `npm run backend:dev` from `Portfolio`.
+7. Start the frontend with `npm run dev` from `Portfolio`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The frontend Vite proxy sends `/api` requests to `http://localhost:4000` during local development.
+
+## Admin account
+
+From `Portfolio`, run:
+
+`npm --prefix backend run create-admin -- admin@example.com "use-a-long-password"`
+
+The command creates or updates an admin account in MongoDB using bcrypt hashing. There is no public registration endpoint.
+
+## API endpoints
+
+- `GET /api/health`
+- `POST /api/contact`
+- `POST /api/admin/login`
+- `GET /api/admin/messages`
+- `PATCH /api/admin/messages/:id`
+- `DELETE /api/admin/messages/:id`
+
+Admin message routes require a JWT bearer token issued by the login endpoint.
+
+## Deployment
+
+Netlify can continue hosting the static React frontend using the root `netlify.toml`. The Node API must be deployed separately to a Node-capable service such as Render, Railway, Fly.io, or a VPS. Set the deployed API URL as `VITE_API_URL` when building the frontend, and configure `MONGODB_URI`, `JWT_SECRET`, `PORT`, `FRONTEND_URL`, and `NODE_ENV=production` on the API host.
+
+MongoDB Atlas provides managed backups. Enable automated backups for production and periodically test restoring a backup into a separate database.
+
+## WhatsApp
+
+The configured number remains in `VITE_WHATSAPP_NUMBER`. The frontend strips formatting characters before creating `wa.me` URLs. Confirm the full international number before production messaging.

@@ -1,0 +1,15 @@
+:root {
+  --color-text: #292622;
+  --color-muted: #756e66;
+  --color-primary: #3f665c;
+  --color-primary-strong: #294d44;
+  --color-secondary: #e8ddd0;
+  --color-accent: #b75f49;
+  --color-dark: #222222;
+  --color-bg: #f7f2e8;
+  --color-surface: #fffdf8;
+  --color-surface-strong: #edf1ec;
+  --color-border: #d8cfc3;
+  --font-main: "Space Mono", monospace;
+  --font-display: "Instrument Serif", Georgia, serif;
+}

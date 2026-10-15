@@ -1,0 +1,124 @@
+.admin-page {
+  min-height: 100vh;
+  padding: 8vh 8%;
+  background: var(--color-bg);
+}
+.admin-login {
+  display: grid;
+  gap: 14px;
+  width: min(420px, 100%);
+  margin: 10vh auto;
+  padding: 36px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+.admin-login h1,
+.admin-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(38px, 6vw, 72px);
+  font-weight: 400;
+}
+.admin-login label {
+  display: grid;
+  gap: 7px;
+  font-weight: 700;
+}
+.admin-login input {
+  border: 1px solid var(--color-border);
+  padding: 13px;
+  background: var(--color-bg);
+}
+.admin-page button,
+.message-actions a {
+  border: 0;
+  padding: 12px 16px;
+  background: var(--color-primary);
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.admin-kicker,
+.message span {
+  color: var(--color-primary);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.admin-error {
+  color: #a23b2f;
+}
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 24px;
+}
+.admin-summary {
+  display: flex;
+  gap: 12px 20px;
+  align-items: baseline;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.admin-summary strong {
+  font-size: 32px;
+}
+.admin-summary span {
+  color: var(--color-muted);
+  margin-right: 20px;
+}
+.message-list {
+  display: grid;
+  gap: 16px;
+  padding-top: 24px;
+}
+.message {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+.message.read {
+  opacity: 0.62;
+}
+.message h2 {
+  margin: 8px 0;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
+}
+.message p {
+  max-width: 680px;
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+.message a {
+  color: var(--color-primary-strong);
+}
+.message-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  gap: 8px;
+  min-width: 140px;
+}
+.message-actions button,
+.message-actions a {
+  font-size: 13px;
+}
+@media (max-width: 700px) {
+  .admin-page {
+    padding: 6vh 6%;
+  }
+  .message {
+    display: grid;
+  }
+  .admin-header {
+    align-items: start;
+    gap: 20px;
+    flex-direction: column;
+  }
+}

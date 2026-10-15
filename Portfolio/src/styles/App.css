@@ -1,0 +1,26 @@
+@import "./variables.css";
+
+.App {
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+main {
+  overflow: hidden;
+}
+
+.whatsapp-float {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 20;
+  border: 1px solid var(--color-primary-strong);
+  background: var(--color-primary);
+  color: #fff;
+  padding: 13px 16px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(34, 34, 34, 0.16);
+}

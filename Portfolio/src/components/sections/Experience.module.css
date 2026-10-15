@@ -1,0 +1,81 @@
+@import "../../styles/variables.css";
+
+.experienceSection {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.2fr);
+  gap: 64px;
+  padding: 112px 8%;
+  background: var(--color-bg);
+}
+
+.headingRow {
+  align-self: start;
+  position: sticky;
+  top: 110px;
+}
+
+.eyebrow {
+  color: var(--color-accent);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.headingRow h2 {
+  max-width: 380px;
+  margin-top: 24px;
+  font-family: var(--font-display);
+  font-size: clamp(44px, 5vw, 74px);
+  font-weight: 400;
+  line-height: 0.94;
+}
+
+.list {
+  border-top: 1px solid var(--color-text);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 48px minmax(150px, 0.7fr) 1fr;
+  gap: 20px;
+  border-bottom: 1px solid var(--color-border);
+  padding: 24px 0 30px;
+}
+
+.item > span {
+  color: var(--color-accent);
+  font-size: 11px;
+}
+
+.item h3 {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.item p {
+  color: var(--color-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+@media (max-width: 800px) {
+  .experienceSection {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding: 80px 6%;
+  }
+
+  .headingRow {
+    position: static;
+  }
+
+  .item {
+    grid-template-columns: 32px 1fr;
+  }
+
+  .item p {
+    grid-column: 2;
+  }
+}

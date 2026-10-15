@@ -1,0 +1,100 @@
+@import "../../styles/variables.css";
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+  width: min(1100px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 28px 0;
+}
+
+.title {
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.menu {
+  display: flex;
+}
+
+.menuitem {
+  display: flex;
+  align-items: center;
+  gap: 42px;
+  list-style: none;
+}
+
+.menuitem a {
+  color: var(--color-muted);
+  font-family: var(--font-main);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.menuitem a:hover {
+  color: var(--color-primary-strong);
+}
+
+.menuBtn {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.menuBtn img {
+  width: 24px;
+  height: 24px;
+}
+
+@media screen and (max-width: 900px) {
+  .navbar {
+    width: calc(100% - 32px);
+    padding: 20px 0;
+  }
+
+  .menu {
+    position: relative;
+  }
+
+  .menuBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menuitem {
+    position: absolute;
+    top: 58px;
+    right: 0;
+    display: none;
+    min-width: 190px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    background: var(--color-surface-strong);
+    padding: 8px;
+  }
+
+  .menuitem a {
+    display: block;
+    padding: 12px;
+  }
+
+  .isOpen {
+    display: flex;
+  }
+}
