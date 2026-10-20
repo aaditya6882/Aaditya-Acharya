@@ -1,26 +1,27 @@
 import React from "react";
 import styles from "./Footer.module.css";
+import { Icon } from "../ui/Icon";
 
-export const Footer = () => {
+export const Footer = ({ site }) => {
   return (
     <footer className={styles.footer}>
-      <p>© {new Date().getFullYear()} Aaditya Acharya. All rights reserved.</p>
+      <p>© {new Date().getFullYear()} {site.name}. {site.footer}</p>
       <div className={styles.socials}>
         <a
-          href="https://github.com/aaditya6882"
+          href={site.github}
           target="_blank"
           rel="noopener noreferrer"
         >
-          GitHub
+          <Icon name="github" size={18} /> GitHub
         </a>
         <a
-          href="https://www.linkedin.com/in/aaditya-acharya-b924a0321/"
+          href={site.linkedin}
           target="_blank"
           rel="noopener noreferrer"
         >
-          LinkedIn
+          <Icon name="linkedin" size={18} /> LinkedIn
         </a>
-        <a href="mailto:aadiyaacharya6882@gmail.com">Email</a>
+        <a href={`mailto:${site.email}`}><Icon name="mail" size={18} /> Email</a>
       </div>
     </footer>
   );

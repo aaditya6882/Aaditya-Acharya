@@ -7,6 +7,7 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import { contactRoutes } from "./routes/contactRoutes.js";
 import { authRoutes } from "./routes/authRoutes.js";
 import { messageRoutes } from "./routes/messageRoutes.js";
+import { contentRoutes } from "./routes/contentRoutes.js";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.get("/api/health", (request, response) =>
   response.json({ status: "ok", service: "portfolio-api" }),
 );
 app.use("/api/contact", contactRoutes);
+app.use("/api/content", contentRoutes);
 app.use("/api/admin", authRoutes);
 app.use("/api/admin/messages", messageRoutes);
 app.use(errorHandler);

@@ -2,25 +2,105 @@
 
 .App {
   min-height: 100vh;
-  background: var(--color-bg);
+  background: #ffffff;
   color: var(--color-text);
+}
+
+section {
+  position: relative;
+}
+
+.section-container {
+  width: min(1152px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.expertise-section {
+  padding: 96px 16px;
+  background: #f9fafb;
+}
+
+.section-eyebrow {
+  margin-bottom: 12px;
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.expertise-section h2 {
+  max-width: 760px;
+  margin-bottom: 40px;
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 800;
+  line-height: 1.08;
+}
+
+.expertise-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.expertise-grid article {
+  min-height: 210px;
+  padding: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+.expertise-grid h3 {
+  margin-bottom: 14px;
+  font-size: 22px;
+}
+
+.expertise-grid p {
+  color: var(--color-muted);
+  line-height: 1.7;
+}
+
+.dark-mode {
+  --color-text: #f8fafc;
+  --color-muted: #cbd5e1;
+  --color-bg: #0f172a;
+  --color-surface: #172033;
+  --color-surface-strong: #1e293b;
+  --color-border: #334155;
+  background: #0f172a;
+}
+
+.dark-mode .navbar,
+.dark-mode .themeBtn,
+.dark-mode .aboutCard,
+.dark-mode .projectCard,
+.dark-mode .skillGroup,
+.dark-mode .expertise-grid article,
+.dark-mode form {
+  background: #172033;
+}
+
+.dark-mode .expertise-section,
+.dark-mode .skillsSection,
+.dark-mode .experienceSection,
+.dark-mode .contactSection {
+  background: #0f172a;
+}
+
+.dark-mode .heroText .eyebrow,
+.dark-mode .menuitem a,
+.dark-mode .themeBtn {
+  color: #e2e8f0;
+}
+
+@media (max-width: 800px) {
+  .expertise-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 main {
   overflow: hidden;
-}
-
-.whatsapp-float {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  z-index: 20;
-  border: 1px solid var(--color-primary-strong);
-  background: var(--color-primary);
-  color: #fff;
-  padding: 13px 16px;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 800;
-  box-shadow: 0 10px 24px rgba(34, 34, 34, 0.16);
 }

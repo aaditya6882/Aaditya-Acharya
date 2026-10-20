@@ -1,47 +1,42 @@
 import React, { useState } from "react";
 import StyleSheet from "./Navbar.module.css";
-import menuIcon from "../../assets/Nav/menu.png";
+import { Icon } from "../ui/Icon";
 
-export const Navbar = () => {
+export const Navbar = ({ site, darkMode, onToggleTheme }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <nav className={StyleSheet.navbar}>
       <a className={StyleSheet.title} href="#home">
-        Aaditya Acharya
+        {site.name}
       </a>
-      <div className={StyleSheet.menu}>
-        <button
-          className={StyleSheet.menuBtn}
-          aria-label="Toggle navigation"
-          aria-expanded={isOpen}
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <img src={menuIcon} alt="" />
+      <div className={StyleSheet.controls}>
+        <div className={StyleSheet.menu}>
+          <button
+            className={StyleSheet.menuBtn}
+            aria-label="Toggle navigation"
+            aria-expanded={isOpen}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <Icon name="menu" size={24} />
+          </button>
+          <ul
+            className={`${StyleSheet.menuitem} ${isOpen ? StyleSheet.isOpen : ""}`}
+            onClick={() => setIsOpen(false)}
+          >
+            {["about", "experience", "projects", "skills", "contact"].map((item) => (
+              <li key={item}>
+                <a href={`#${item}`}>{item[0].toUpperCase() + item.slice(1)}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <a className={StyleSheet.resumeLink} href={site.resume || "#contact"} download>
+          Download Resume
+        </a>
+        <button className={StyleSheet.themeBtn} onClick={onToggleTheme} aria-label="Toggle theme">
+          <Icon name={darkMode ? "sun" : "moon"} size={20} />
         </button>
-        <ul
-          className={`${StyleSheet.menuitem} ${isOpen ? StyleSheet.isOpen : ""}`}
-          onClick={() => setIsOpen(false)}
-        >
-          <li>
-            <a href="#about">About</a>
-          </li>
-          <li>
-            <a href="#skills">Skills</a>
-          </li>
-          <li>
-            <a href="#projects">Work</a>
-          </li>
-          <li>
-            <a href="#experience">Experience</a>
-          </li>
-          <li>
-            <a href="#education">Education</a>
-          </li>
-          <li>
-            <a href="#contact">Contact</a>
-          </li>
-        </ul>
       </div>
     </nav>
   );

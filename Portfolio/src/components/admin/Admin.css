@@ -3,6 +3,111 @@
   padding: 8vh 8%;
   background: var(--color-bg);
 }
+.admin-page h2 {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 400;
+}
+.admin-notice {
+  margin: 18px 0;
+  color: var(--color-primary);
+}
+.admin-overview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  padding: 26px 0;
+}
+.admin-overview article {
+  display: grid;
+  gap: 5px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  padding: 20px;
+}
+.admin-overview strong {
+  font-size: 30px;
+}
+.admin-overview span {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+.project-manager {
+  display: grid;
+  gap: 22px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.managed-projects {
+  display: grid;
+  gap: 10px;
+}
+.managed-projects article {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  padding: 18px;
+}
+.managed-projects p {
+  max-width: 700px;
+  margin-top: 6px;
+  color: var(--color-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.project-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  padding: 18px;
+}
+.project-form input,
+.project-form textarea {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  padding: 12px;
+}
+.project-form textarea {
+  grid-column: 1 / -1;
+  min-height: 90px;
+}
+.project-form button {
+  justify-self: start;
+}
+.content-editor {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.45fr) minmax(0, 1fr);
+  gap: 24px;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.content-editor p:not(.admin-kicker) {
+  color: var(--color-muted);
+  line-height: 1.6;
+  margin-top: 12px;
+}
+.content-editor textarea {
+  min-height: 520px;
+  width: 100%;
+  resize: vertical;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  background: var(--color-dark);
+  color: var(--color-text);
+  font: 13px/1.6 "Space Mono", monospace;
+}
+.content-editor button {
+  grid-column: 2;
+  justify-self: start;
+}
+.admin-section-heading {
+  padding: 30px 0 0;
+}
 .admin-login {
   display: grid;
   gap: 14px;
@@ -33,7 +138,7 @@
   border: 0;
   padding: 12px 16px;
   background: var(--color-primary);
-  color: #fff;
+  color: var(--color-dark);
   text-decoration: none;
   cursor: pointer;
 }
@@ -114,6 +219,19 @@
     padding: 6vh 6%;
   }
   .message {
+    display: grid;
+  }
+  .content-editor {
+    grid-template-columns: 1fr;
+  }
+  .content-editor button {
+    grid-column: 1;
+  }
+  .admin-overview,
+  .project-form {
+    grid-template-columns: 1fr 1fr;
+  }
+  .managed-projects article {
     display: grid;
   }
   .admin-header {

@@ -1,54 +1,36 @@
 import React from "react";
 import Stylesheet from "./Hero.module.css";
 import aaditya from "../../assets/hero/Aaditya.png";
+import { Icon } from "../ui/Icon";
 
-export const Hero = () => {
+export const Hero = ({ content, site }) => {
   return (
-    <section className={Stylesheet.hero} id="home">
-      <div className={Stylesheet.heroText}>
-        <p className={Stylesheet.eyebrow}>Data / AI / Software</p>
-        <h1 className={Stylesheet.Name}>
-          Building intelligent solutions with data, AI, and code.
-        </h1>
+    <section className={`${Stylesheet.hero} motion-reveal`} id="home">
+      <div className={`${Stylesheet.heroText} ${Stylesheet.heroEntrance}`}>
+        <div className={Stylesheet.heading}>
+          <span className={Stylesheet.heroName}>{site.name}</span>
+          <span className={Stylesheet.heroRole}>{content.title}</span>
+        </div>
         <p className={Stylesheet.description}>
-          Exploring Data Science, Artificial Intelligence, Machine Learning, and
-          Software Development through practical projects and continuous
-          learning.
+          {content.description}
         </p>
-        <div className={Stylesheet.actions}>
+        <div className={`${Stylesheet.actions} motion-reveal`}>
+          <a href="#contact" className={Stylesheet.primaryBtn}>Get in Touch</a>
           <a href="#projects" className={Stylesheet.primaryBtn}>
             View Projects
           </a>
-          <a href="#contact" className={Stylesheet.secondaryBtn}>
-            Contact Me
-          </a>
-          <a
-            href={`https://wa.me/${(import.meta.env.VITE_WHATSAPP_NUMBER || "9741688299").replace(/\D/g, "")}?text=${encodeURIComponent("Hi Aaditya, I visited your portfolio and would like to discuss a project with you.")}`}
-            className={Stylesheet.whatsappBtn}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            WhatsApp
-          </a>
+          <a href={site.resume || "#contact"} className={Stylesheet.secondaryBtn}><Icon name="download" size={21} /> Resume</a>
         </div>
-        <div className={Stylesheet.stats} aria-label="Portfolio highlights">
-          <span>
-            <strong>8+</strong>
-            Projects
-          </span>
-          <span>
-            <strong>4</strong>
-            Tech Areas
-          </span>
-          <span>
-            <strong>BSc</strong>
-            CS Student
-          </span>
+        <div className={`${Stylesheet.socials} motion-reveal`}>
+          <a href={site.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><Icon name="linkedin" /></a>
+          <a href={site.github} target="_blank" rel="noreferrer" aria-label="GitHub"><Icon name="github" /></a>
+          <a href={`https://wa.me/${(site.whatsapp || "").replace(/\D/g, "")}`} target="_blank" rel="noreferrer" aria-label="WhatsApp"><Icon name="whatsapp" /></a>
+          <a href={`mailto:${site.email}`} aria-label="Email"><Icon name="mail" /></a>
         </div>
       </div>
-      <div className={Stylesheet.imageWrap}>
+      <div className={`${Stylesheet.imageWrap} ${Stylesheet.heroImageEntrance}`}>
         <img
-          src={aaditya}
+          src={content.image || aaditya}
           alt="Aaditya Acharya"
           className={Stylesheet.aaditya}
         />

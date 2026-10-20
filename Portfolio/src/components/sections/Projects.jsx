@@ -1,8 +1,9 @@
 import React from "react";
 import styles from "./Projects.module.css";
+import { Icon } from "../ui/Icon";
 
-export const Projects = () => {
-  const projectList = [
+export const Projects = ({ projects }) => {
+  const projectList = projects || [
     {
       title: "Vehicle Rental System",
       format: "Web system / 01",
@@ -51,34 +52,40 @@ export const Projects = () => {
   ];
 
   return (
-    <section className={styles.projectsSection} id="projects">
-      <p className={styles.eyebrow}>Portfolio</p>
-      <h2 className={styles.heading}>Selected Projects</h2>
+    <section className={`${styles.projectsSection} motion-reveal`} id="projects">
+      <h2 className={styles.heading}>Featured Projects</h2>
       <div className={styles.projectsGrid}>
         {projectList.map((project, index) => (
           <div
             key={project.title}
-            className={`${styles.projectCard} ${styles[`project${index + 1}`]}`}
+            style={{ "--motion-delay": `${index * 90}ms` }}
+            className={`${styles.projectCard} motion-reveal ${styles[`project${index + 1}`]}`}
           >
-            <span className={styles.projectNumber}>0{index + 1}</span>
-            <div
-              className={`${styles.projectVisual} ${styles[`tone${index + 1}`]}`}
-            >
-              <span>{project.format}</span>
-              <strong>{project.visual}</strong>
+            <div className={styles.cardHeader}>
+              <h3>{project.title}</h3>
+              <p className={styles.subtitle}>{project.visual || project.format}</p>
             </div>
-            <h3>{project.title}</h3>
-            <p>{project.description}</p>
-            <div className={styles.tags}>
-              {project.tags.map((tag) => (
-                <span key={tag}>{tag}</span>
-              ))}
+            <div className={styles.cardBody}>
+              <div className={styles.projectVisual}>
+                <img
+                  src={project.image || "/placeholder.svg?height=240&width=400"}
+                  alt={project.title}
+                />
+                <div className={styles.visualOverlay} />
+              </div>
+              <p>{project.description}</p>
+              <div className={styles.tags}>
+                {project.tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
             </div>
-            <a href={project.link} target="_blank" rel="noopener noreferrer">
-              {project.link.startsWith("#")
-                ? "Ask About It ->"
-                : "View Project ->"}
-            </a>
+            <div className={styles.cardFooter}>
+              <a href={project.link || "#contact"} target={project.link && project.link !== "#" ? "_blank" : undefined} rel="noopener noreferrer">
+                <Icon name="external" size={16} />
+                <span>View Project</span>
+              </a>
+            </div>
           </div>
         ))}
       </div>

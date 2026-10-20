@@ -28,13 +28,26 @@ The command creates or updates an admin account in MongoDB using bcrypt hashing.
 ## API endpoints
 
 - `GET /api/health`
+- `GET /api/content`
 - `POST /api/contact`
 - `POST /api/admin/login`
+- `PUT /api/content`
 - `GET /api/admin/messages`
 - `PATCH /api/admin/messages/:id`
 - `DELETE /api/admin/messages/:id`
 
-Admin message routes require a JWT bearer token issued by the login endpoint.
+Admin content and message routes require a JWT bearer token issued by the login endpoint.
+
+## Content management
+
+Open `/admin` in the frontend and sign in with the MongoDB admin account. The
+dashboard stores one content document in the `PortfolioContent` collection. Use
+the Projects manager for normal project CRUD: add projects, delete them with
+confirmation, toggle featured/published state, and save changes. The advanced
+editor controls the public site name, links, hero, about cards, skills,
+education, experience, certifications, section visibility, projects, contact
+copy, and footer. The public frontend uses the bundled content as a safe
+fallback until the API has content saved.
 
 ## Deployment
 
