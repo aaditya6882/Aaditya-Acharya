@@ -68,6 +68,34 @@
   text-decoration: underline;
 }
 
+.links a.whatsappLink {
+  color: #16a34a;
+}
+
+.links a.whatsappLink:hover {
+  color: #15803d;
+}
+
+.links a.resumeLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: 13px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.links a.resumeLink:hover {
+  background: #f1f5f9;
+  border-color: var(--color-primary);
+  text-decoration: none;
+}
+
 form {
   width: min(1152px, 100%);
   margin: 0 auto;
@@ -121,7 +149,7 @@ button {
   min-height: 44px;
   border: none;
   border-radius: 10px;
-  background: linear-gradient(90deg, #9333ea, #2563eb);
+  background: linear-gradient(90deg, #9333ea, #c026d3);
   color: #ffffff;
   cursor: pointer;
   font-size: 11px;

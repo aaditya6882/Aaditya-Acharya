@@ -29,7 +29,7 @@ function App() {
       { threshold: 0.12, rootMargin: "0px 0px -48px" },
     );
     document.querySelectorAll(".motion-reveal").forEach((element) => revealObserver.observe(element));
-    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:4000/api"}/content`)
+    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/content`)
       .then((response) => (response.ok ? response.json() : null))
       .then((remoteContent) => remoteContent && setContent(mergeContent(remoteContent)))
       .catch(() => {});

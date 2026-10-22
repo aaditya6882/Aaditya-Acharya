@@ -1,0 +1,21 @@
+# Environment variables (CRITICAL: Never commit .env with JWT_SECRET, MongoDB URI)
+.env
+.env.*
+!.env.example
+*.env
+
+# Dependencies
+node_modules/
+
+# Uploads directory (user-uploaded resumes and project images)
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db

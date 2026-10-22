@@ -1,242 +1,1497 @@
-.admin-page {
-  min-height: 100vh;
-  padding: 8vh 8%;
-  background: var(--color-bg);
+/* ========================================================
+   Lumo Tech Admin Dashboard (Exact Match to Screenshot)
+   ======================================================== */
+
+:root {
+  --lumo-bg: #fafafa;
+  --lumo-sidebar: #ffffff;
+  --lumo-border: #e5e7eb;
+  --lumo-text-dark: #111827;
+  --lumo-text-body: #374151;
+  --lumo-text-muted: #6b7280;
+  --lumo-text-light: #9ca3af;
+  --lumo-active-gray: #e5e7eb;
+  --lumo-hover-gray: #f3f4f6;
+  --lumo-red: #dc2626;
+  --lumo-green: #10b981;
+  --lumo-radius: 8px;
 }
-.admin-page h2 {
-  font-family: var(--font-display);
-  font-size: 38px;
-  font-weight: 400;
+
+* {
+  box-sizing: border-box;
 }
-.admin-notice {
-  margin: 18px 0;
-  color: var(--color-primary);
-}
-.admin-overview {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  padding: 26px 0;
-}
-.admin-overview article {
-  display: grid;
-  gap: 5px;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  padding: 20px;
-}
-.admin-overview strong {
-  font-size: 30px;
-}
-.admin-overview span {
-  color: var(--color-muted);
-  font-size: 12px;
-}
-.project-manager {
-  display: grid;
-  gap: 22px;
-  padding: 30px 0;
-  border-bottom: 1px solid var(--color-border);
-}
-.managed-projects {
-  display: grid;
-  gap: 10px;
-}
-.managed-projects article {
+
+/* Base Shell */
+.lumo-admin-shell {
   display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  padding: 18px;
+  min-height: 100vh;
+  background: var(--lumo-bg);
+  color: var(--lumo-text-dark);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
-.managed-projects p {
-  max-width: 700px;
-  margin-top: 6px;
-  color: var(--color-muted);
-  font-size: 12px;
-  line-height: 1.5;
+
+/* ========================================================
+   Sidebar
+   ======================================================== */
+.lumo-sidebar {
+  width: 220px;
+  background: var(--lumo-sidebar);
+  border-right: 1px solid var(--lumo-border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
 }
-.project-form {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  padding: 18px;
+
+.lumo-brand-box {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--lumo-border);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
 }
-.project-form input,
-.project-form textarea {
-  border: 1px solid var(--color-border);
-  background: var(--color-bg);
-  color: var(--color-text);
-  padding: 12px;
+
+.lumo-brand-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--lumo-text-dark);
+  letter-spacing: -0.01em;
 }
-.project-form textarea {
-  grid-column: 1 / -1;
-  min-height: 90px;
-}
-.project-form button {
-  justify-self: start;
-}
-.content-editor {
-  display: grid;
-  grid-template-columns: minmax(220px, 0.45fr) minmax(0, 1fr);
-  gap: 24px;
-  padding: 40px 0;
-  border-bottom: 1px solid var(--color-border);
-}
-.content-editor p:not(.admin-kicker) {
-  color: var(--color-muted);
-  line-height: 1.6;
-  margin-top: 12px;
-}
-.content-editor textarea {
-  min-height: 520px;
-  width: 100%;
-  resize: vertical;
-  padding: 18px;
-  border: 1px solid var(--color-border);
-  background: var(--color-dark);
-  color: var(--color-text);
-  font: 13px/1.6 "Space Mono", monospace;
-}
-.content-editor button {
-  grid-column: 2;
-  justify-self: start;
-}
-.admin-section-heading {
-  padding: 30px 0 0;
-}
-.admin-login {
-  display: grid;
-  gap: 14px;
-  width: min(420px, 100%);
-  margin: 10vh auto;
-  padding: 36px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-}
-.admin-login h1,
-.admin-header h1 {
-  font-family: var(--font-display);
-  font-size: clamp(38px, 6vw, 72px);
+
+.lumo-brand-admin {
+  font-size: 11px;
+  color: var(--lumo-text-muted);
   font-weight: 400;
 }
-.admin-login label {
-  display: grid;
-  gap: 7px;
+
+/* Navigation List */
+.lumo-nav-menu {
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.lumo-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--lumo-text-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.lumo-nav-item:hover {
+  background: var(--lumo-hover-gray);
+  color: var(--lumo-text-dark);
+}
+
+.lumo-nav-item.active {
+  background: var(--lumo-active-gray);
+  color: var(--lumo-text-dark);
+  font-weight: 600;
+}
+
+.lumo-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4b5563;
+  width: 18px;
+  height: 18px;
+}
+
+.lumo-badge-count {
+  margin-left: auto;
+  font-size: 11px;
   font-weight: 700;
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 1px 6px;
+  border-radius: 10px;
 }
-.admin-login input {
-  border: 1px solid var(--color-border);
-  padding: 13px;
-  background: var(--color-bg);
+
+/* Sidebar Footer */
+.lumo-sidebar-footer {
+  padding: 12px 10px 16px;
+  border-top: 1px solid var(--lumo-border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
-.admin-page button,
-.message-actions a {
-  border: 0;
-  padding: 12px 16px;
-  background: var(--color-primary);
-  color: var(--color-dark);
+
+.sidebar-action-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px 6px;
+}
+
+.dirty-pill {
+  font-size: 10.5px;
+  color: #b45309;
+  font-weight: 600;
+}
+
+.lumo-save-action-btn {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  color: var(--lumo-text-dark);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lumo-save-action-btn.active-dirty {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+}
+
+.lumo-sidebar-ext-link {
+  font-size: 12.5px;
+  color: var(--lumo-text-muted);
   text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+
+.lumo-sidebar-ext-link:hover {
+  color: var(--lumo-text-dark);
+  background: var(--lumo-hover-gray);
+}
+
+.lumo-nav-item.logout-link {
+  color: #dc2626;
+}
+
+.lumo-nav-item.logout-link:hover {
+  background: #fef2f2;
+}
+
+/* ========================================================
+   Main Content Area
+   ======================================================== */
+.lumo-main-viewport {
+  flex: 1;
+  padding: 32px 48px 60px;
+  max-width: 1360px;
+  min-width: 0;
+}
+
+/* Page Header */
+.lumo-page-header {
+  margin-bottom: 24px;
+}
+
+.lumo-page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--lumo-text-dark);
+  letter-spacing: -0.02em;
+  margin: 0 0 4px 0;
+}
+
+.lumo-page-subtitle {
+  font-size: 13.5px;
+  color: var(--lumo-text-muted);
+  margin: 0;
+}
+
+/* ========================================================
+   Top 7 Metric Cards (3 Columns)
+   ======================================================== */
+.lumo-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.lumo-stat-card {
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  border-radius: var(--lumo-radius);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.15s ease;
   cursor: pointer;
 }
-.admin-kicker,
-.message span {
-  color: var(--color-primary);
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+
+.lumo-stat-card:hover {
+  border-color: #cbd5e1;
 }
-.admin-error {
-  color: #a23b2f;
-}
-.admin-header {
+
+.lumo-card-label {
   display: flex;
-  justify-content: space-between;
-  align-items: end;
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: 24px;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #4b5563;
+  font-weight: 500;
+  margin-bottom: 12px;
 }
-.admin-summary {
-  display: flex;
-  gap: 12px 20px;
-  align-items: baseline;
-  padding: 28px 0;
-  border-bottom: 1px solid var(--color-border);
+
+.card-icon {
+  font-size: 13px;
+  opacity: 0.85;
 }
-.admin-summary strong {
-  font-size: 32px;
-}
-.admin-summary span {
-  color: var(--color-muted);
-  margin-right: 20px;
-}
-.message-list {
-  display: grid;
-  gap: 16px;
-  padding-top: 24px;
-}
-.message {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 24px;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-}
-.message.read {
-  opacity: 0.62;
-}
-.message h2 {
-  margin: 8px 0;
-  font-family: var(--font-display);
+
+.lumo-card-value {
   font-size: 28px;
-  font-weight: 400;
+  font-weight: 700;
+  color: var(--lumo-text-dark);
+  margin-bottom: 6px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
 }
-.message p {
-  max-width: 680px;
-  color: var(--color-muted);
-  line-height: 1.6;
+
+.lumo-card-value.text-red {
+  color: var(--lumo-red);
 }
-.message a {
-  color: var(--color-primary-strong);
+
+.lumo-card-value.text-green {
+  color: var(--lumo-green);
 }
-.message-actions {
+
+.lumo-card-value.text-muted {
+  color: var(--lumo-text-light);
+}
+
+.lumo-card-subtext {
+  font-size: 12px;
+  color: var(--lumo-text-muted);
+  line-height: 1.4;
+}
+
+/* ========================================================
+   Lower Split Section: Chart + SEO Health
+   ======================================================== */
+.lumo-bottom-split {
+  display: grid;
+  grid-template-columns: 1.85fr 1fr;
+  gap: 16px;
+}
+
+/* Left Chart Card */
+.lumo-chart-card {
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  border-radius: var(--lumo-radius);
+  padding: 20px 22px;
+}
+
+.lumo-card-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.lumo-card-head-row h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lumo-text-dark);
+  margin: 0;
+}
+
+.lumo-link-action {
+  background: none;
+  border: none;
+  color: #4b5563;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+}
+
+.lumo-link-action:hover {
+  color: var(--lumo-text-dark);
+  text-decoration: underline;
+}
+
+.lumo-chart-container {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.lumo-y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--lumo-text-light);
+  height: 180px;
+  padding-bottom: 16px;
+}
+
+.lumo-chart-canvas {
+  flex: 1;
+  height: 180px;
+}
+
+.lumo-net-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Right SEO Health Card */
+.lumo-seo-card {
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  border-radius: var(--lumo-radius);
+  padding: 20px 22px;
+}
+
+.lumo-seo-score {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--lumo-text-dark);
+  margin-bottom: 2px;
+  letter-spacing: -0.01em;
+}
+
+.lumo-seo-subhead {
+  font-size: 12.5px;
+  color: var(--lumo-text-muted);
+  margin-bottom: 18px;
+}
+
+.lumo-check-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lumo-check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--lumo-text-body);
+  font-weight: 500;
+}
+
+.check-badge-green {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--lumo-green);
+  color: var(--lumo-green);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* Inner Tab Box Container */
+.lumo-tab-inner-box {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================================================
+   Form & Other Tab Styles in Lumo Clean Theme
+   ======================================================== */
+.admin-tab-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.tab-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.tab-subtitle {
+  color: var(--lumo-text-muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.admin-section-card {
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  border-radius: var(--lumo-radius);
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+.admin-section-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.section-subtext {
+  color: var(--lumo-text-muted);
+  font-size: 12.5px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--lumo-text-body);
+}
+
+.form-group input,
+.form-group textarea,
+.sub-edit-card input,
+.sub-edit-card textarea {
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  color: var(--lumo-text-dark);
+  padding: 9px 12px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.sub-edit-card input:focus,
+.sub-edit-card textarea:focus {
+  border-color: #111827;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn-primary {
+  background: #111827;
+  color: #ffffff;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: var(--lumo-text-dark);
+  border: 1px solid var(--lumo-border);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-danger {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Projects Management Cards */
+.table-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.search-input {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  color: var(--lumo-text-dark);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  outline: none;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.filter-pill {
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  color: var(--lumo-text-muted);
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.filter-pill.active {
+  background: #111827;
+  border-color: #111827;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.project-manage-card {
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  border-radius: var(--lumo-radius);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.badge-format {
+  font-size: 11px;
+  background: #f3f4f6;
+  color: var(--lumo-text-dark);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.badge-featured {
+  font-size: 11px;
+  background: #fef3c7;
+  color: #b45309;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.badge-live {
+  font-size: 11px;
+  color: var(--lumo-green);
+  background: #ecfdf5;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.badge-draft {
+  font-size: 11px;
+  color: var(--lumo-text-muted);
+  background: #f3f4f6;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.project-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+}
+
+.project-desc {
+  font-size: 12.5px;
+  color: var(--lumo-text-muted);
+  line-height: 1.5;
+  margin: 0 0 12px 0;
+  flex: 1;
+}
+
+.project-tags-list {
   display: flex;
   flex-wrap: wrap;
-  align-content: start;
-  gap: 8px;
-  min-width: 140px;
+  gap: 6px;
+  margin-bottom: 14px;
 }
-.message-actions button,
-.message-actions a {
+
+.tag-chip {
+  font-size: 11px;
+  background: #f3f4f6;
+  color: #374151;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.project-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--lumo-border);
+}
+
+.toggle-group {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-toggle {
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  color: var(--lumo-text-muted);
+  font-size: 11.5px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-toggle.active {
+  background: #ecfdf5;
+  border-color: #10b981;
+  color: #059669;
+  font-weight: 600;
+}
+
+/* Visibility Switch Grid */
+.visibility-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.visibility-card {
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  border-radius: var(--lumo-radius);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.switch-pill {
+  width: 40px;
+  height: 22px;
+  background: #cbd5e1;
+  border-radius: 11px;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.switch-pill.on {
+  background: #10b981;
+}
+
+.switch-thumb {
+  width: 18px;
+  height: 18px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.switch-pill.on .switch-thumb {
+  transform: translateX(18px);
+}
+
+/* Inbox & Messages */
+.inbox-messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message-card-admin {
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  border-radius: var(--lumo-radius);
+  padding: 18px 20px;
+}
+
+.message-card-admin.is-unread {
+  border-left: 3px solid #111827;
+}
+
+.message-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.sender-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar-circle {
+  width: 34px;
+  height: 34px;
+  background: #e5e7eb;
+  color: #111827;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.message-body-text {
   font-size: 13px;
+  color: #374151;
+  line-height: 1.6;
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
 }
-@media (max-width: 700px) {
-  .admin-page {
-    padding: 6vh 6%;
+
+/* Cards & Skill Groups Edit Grid */
+.cards-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.sub-edit-card {
+  background: #f9fafb;
+  border: 1px solid var(--lumo-border);
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skill-groups-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.skill-group-box {
+  background: #f9fafb;
+  border: 1px solid var(--lumo-border);
+  border-radius: 6px;
+  padding: 14px;
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  padding: 3px 8px;
+  border-radius: 16px;
+  font-size: 11.5px;
+}
+
+/* Raw JSON Textarea */
+.code-editor-textarea {
+  width: 100%;
+  min-height: 500px;
+  background: #111827;
+  border: 1px solid #374151;
+  color: #a3e635;
+  font-family: "Space Mono", monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 16px;
+  border-radius: 6px;
+}
+
+/* ========================================================
+   Login Screen (Exact Match to lumotechglobal.com/admin)
+   ======================================================== */
+.lumo-login-viewport {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  padding: 24px;
+}
+
+.lumo-login-wrapper {
+  width: 100%;
+  max-width: 384px;
+}
+
+.lumo-login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.lumo-login-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.lumo-login-sub {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+.lumo-login-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lumo-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lumo-field-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+.lumo-field-group input {
+  width: 100%;
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 0 12px;
+  font-size: 14px;
+  color: #0f172a;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.lumo-field-group input:focus {
+  border-color: #0f172a;
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1);
+}
+
+.lumo-login-submit {
+  width: 100%;
+  height: 40px;
+  border-radius: 6px;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  margin-top: 4px;
+}
+
+.lumo-login-submit:hover:not(:disabled) {
+  background: #1e293b;
+}
+
+.lumo-login-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.lumo-login-back {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.lumo-login-back a {
+  font-size: 13px;
+  color: #64748b;
+  text-decoration: none;
+}
+
+.lumo-login-back a:hover {
+  color: #0f172a;
+  text-decoration: underline;
+}
+
+
+/* Toast */
+.admin-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #111827;
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+}
+
+/* Responsive */
+@media (max-width: 1080px) {
+  .lumo-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-  .message {
-    display: grid;
-  }
-  .content-editor {
+  .lumo-bottom-split {
     grid-template-columns: 1fr;
   }
-  .content-editor button {
-    grid-column: 1;
-  }
-  .admin-overview,
-  .project-form {
-    grid-template-columns: 1fr 1fr;
-  }
-  .managed-projects article {
-    display: grid;
-  }
-  .admin-header {
-    align-items: start;
-    gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .lumo-admin-shell {
     flex-direction: column;
   }
+  .lumo-sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+  .lumo-nav-menu {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .lumo-main-viewport {
+    padding: 20px 16px;
+  }
+  .lumo-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================================
+   Shared Tab Utilities
+   ======================================================== */
+
+.tab-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.empty-state,
+.empty-hint {
+  text-align: center;
+  padding: 32px 20px;
+  color: var(--lumo-text-muted);
+  font-size: 13.5px;
+}
+
+/* ========================================================
+   Badge Pill (General)
+   ======================================================== */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  background: #f3f4f6;
+  color: var(--lumo-text-body);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.badge-pill.badge-urgent {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+/* ========================================================
+   Inbox / Message Card Extras
+   ======================================================== */
+.sender-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.sender-name-row h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lumo-text-dark);
+  margin: 0;
+}
+
+.sender-email {
+  font-size: 12px;
+  color: var(--lumo-text-muted);
+  text-decoration: none;
+}
+
+.sender-email:hover {
+  color: var(--lumo-text-dark);
+  text-decoration: underline;
+}
+
+.message-time {
+  font-size: 11.5px;
+  color: var(--lumo-text-light);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.message-subject-line {
+  font-size: 13px;
+  color: var(--lumo-text-body);
+  margin-bottom: 8px;
+}
+
+.message-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--lumo-border);
+  margin-top: 4px;
+}
+
+.message-actions-left {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ========================================================
+   Experience Tab
+   ======================================================== */
+.card-form-box {
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  border-radius: var(--lumo-radius);
+  padding: 20px 22px;
+  margin-bottom: 18px;
+}
+
+.card-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.card-form-header h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.btn-close {
+  background: none;
+  border: 1px solid var(--lumo-border);
+  color: var(--lumo-text-muted);
+  font-size: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-close:hover {
+  background: #f3f4f6;
+  color: var(--lumo-text-dark);
+}
+
+.project-editor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.experience-manage-card {
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  border-radius: var(--lumo-radius);
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.exp-left {
+  flex-shrink: 0;
+}
+
+.exp-period {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lumo-text-dark);
+}
+
+.exp-center {
+  flex: 1;
+  min-width: 0;
+}
+
+.exp-header-line {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.exp-header-line h4 {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--lumo-text-dark);
+  margin: 0;
+}
+
+.exp-company {
+  font-size: 13px;
+  color: var(--lumo-text-muted);
+  font-weight: 500;
+}
+
+.exp-date {
+  font-size: 12px;
+  color: var(--lumo-text-light);
+}
+
+.exp-detail {
+  font-size: 12.5px;
+  color: var(--lumo-text-body);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.exp-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.icon-action-btn {
+  background: #f9fafb;
+  border: 1px solid var(--lumo-border);
+  color: var(--lumo-text-muted);
+  font-size: 13px;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.icon-action-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  color: var(--lumo-text-dark);
+}
+
+.icon-action-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.icon-action-btn.delete:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+/* ========================================================
+   Skills Tab Extras
+   ======================================================== */
+.group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.skill-chip button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--lumo-text-muted);
+  font-size: 11px;
+  line-height: 1;
+}
+
+.skill-chip button:hover {
+  color: #dc2626;
+}
+
+.add-chip-row {
+  display: flex;
+  gap: 6px;
+}
+
+.add-chip-row input {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid var(--lumo-border);
+  color: var(--lumo-text-dark);
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  outline: none;
+}
+
+.add-chip-row input:focus {
+  border-color: #111827;
+}
+
+.btn-tiny {
+  background: #f3f4f6;
+  border: 1px solid var(--lumo-border);
+  color: var(--lumo-text-dark);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.btn-tiny:hover {
+  background: #e5e7eb;
+}
+
+.btn-tiny.delete {
+  color: #dc2626;
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.card-top-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.card-badge {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--lumo-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.card-subtext {
+  font-size: 12px;
+  color: var(--lumo-text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ========================================================
+   Projects Tab extras
+   ======================================================== */
+.project-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lumo-text-muted);
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid var(--lumo-border);
+  border-radius: 6px;
+  background: #f9fafb;
+  transition: all 0.15s;
+}
+
+.project-link-btn:hover {
+  background: #f3f4f6;
+  color: var(--lumo-text-dark);
+}
+
+/* ========================================================
+   Security Tab extras
+   ======================================================== */
+.info-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.account-avatar {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.account-role {
+  font-size: 12.5px;
+  color: var(--lumo-text-muted);
+  margin: 2px 0 0 0;
+}
+
+.security-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ========================================================
+   Alert box (JSON editor error)
+   ======================================================== */
+.alert-box {
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.alert-box.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.json-editor-wrapper {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* ========================================================
+   Item row (About paragraphs)
+   ======================================================== */
+.item-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.item-row textarea {
+  flex: 1;
+}
+
+/* ========================================================
+   Visibility card extras
+   ======================================================== */
+.visibility-info h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lumo-text-dark);
+  margin: 0 0 4px 0;
+}
+
+.visibility-info p {
+  font-size: 12.5px;
+  color: var(--lumo-text-muted);
+  margin: 0;
+}
+
+.switch-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.switch-label {
+  font-size: 10.5px;
+  color: var(--lumo-text-muted);
+  font-weight: 600;
+}
+
+.visibility-card.is-active {
+  border-color: #10b981;
 }

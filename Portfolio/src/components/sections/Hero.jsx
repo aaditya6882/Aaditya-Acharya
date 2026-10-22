@@ -19,7 +19,44 @@ export const Hero = ({ content, site }) => {
           <a href="#projects" className={Stylesheet.primaryBtn}>
             View Projects
           </a>
-          <a href={site.resume || "#contact"} className={Stylesheet.secondaryBtn}><Icon name="download" size={21} /> Resume</a>
+          {site.resume && site.resume !== "#contact" ? (
+            <div className={Stylesheet.resumeButtonGroup}>
+              <a
+                href={site.resume.includes("api/resume/view") || site.resume.includes("api/resume/download")
+                  ? (site.resume.replace("/download", "/view"))
+                  : site.resume}
+                target="_blank"
+                rel="noreferrer"
+                className={Stylesheet.secondaryBtn}
+                title="Open resume in new tab"
+              >
+                <Icon name="file" size={18} /> View CV
+              </a>
+              <a
+                href={site.resume.includes("api/resume/view")
+                  ? site.resume.replace("/view", "/download")
+                  : site.resume}
+                target="_blank"
+                rel="noreferrer"
+                download
+                className={Stylesheet.downloadIconBtn}
+                title="Download CV"
+                aria-label="Download CV"
+              >
+                <Icon name="download" size={18} />
+              </a>
+            </div>
+          ) : (
+            <a
+              href={`http://localhost:5000/api/resume/view`}
+              target="_blank"
+              rel="noreferrer"
+              className={Stylesheet.secondaryBtn}
+              title="Open or download resume"
+            >
+              <Icon name="download" size={18} /> Resume / CV
+            </a>
+          )}
         </div>
         <div className={`${Stylesheet.socials} motion-reveal`}>
           <a href={site.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><Icon name="linkedin" /></a>

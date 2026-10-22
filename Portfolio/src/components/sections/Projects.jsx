@@ -67,11 +67,27 @@ export const Projects = ({ projects }) => {
             </div>
             <div className={styles.cardBody}>
               <div className={styles.projectVisual}>
-                <img
-                  src={project.image || "/placeholder.svg?height=240&width=400"}
-                  alt={project.title}
-                />
-                <div className={styles.visualOverlay} />
+                {project.image ? (
+                  <>
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      loading="lazy"
+                    />
+                    <div className={styles.visualOverlay} />
+                  </>
+                ) : (
+                  <div className={styles.fallbackBanner}>
+                    <div className={styles.fallbackPattern} />
+                    <div className={styles.fallbackIconBadge}>
+                      <Icon name="code" size={26} />
+                    </div>
+                    <span className={styles.fallbackVisualTag}>
+                      {project.visual || project.format || "Software Project"}
+                    </span>
+                    <span className={styles.fallbackTitle}>{project.title}</span>
+                  </div>
+                )}
               </div>
               <p>{project.description}</p>
               <div className={styles.tags}>

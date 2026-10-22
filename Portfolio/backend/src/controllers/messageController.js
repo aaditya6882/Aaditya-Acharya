@@ -50,3 +50,13 @@ export async function deleteMessage(request, response, next) {
     return next(error);
   }
 }
+
+export async function markAllRead(request, response, next) {
+  try {
+    await ContactMessage.updateMany({ isRead: false }, { isRead: true });
+    return response.json({ message: "All messages marked as read." });
+  } catch (error) {
+    return next(error);
+  }
+}
+

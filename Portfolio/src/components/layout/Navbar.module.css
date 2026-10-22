@@ -19,7 +19,7 @@
 
 .title {
   color: var(--color-text);
-  background: linear-gradient(90deg, #9333ea, #2563eb);
+  background: linear-gradient(90deg, #9333ea, #c026d3);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;

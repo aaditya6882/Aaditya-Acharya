@@ -1,156 +1,476 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { defaultContent, mergeContent } from "../../data/content";
+import { adminApi } from "./api";
+import { DashboardTab } from "./tabs/DashboardTab";
+import { ProjectsTab } from "./tabs/ProjectsTab";
+import { ProfileTab } from "./tabs/ProfileTab";
+import { AboutTab } from "./tabs/AboutTab";
+import { SkillsTab } from "./tabs/SkillsTab";
+import { ExperienceTab } from "./tabs/ExperienceTab";
+import { VisibilityTab } from "./tabs/VisibilityTab";
+import { InboxTab } from "./tabs/InboxTab";
+import { SecurityTab } from "./tabs/SecurityTab";
+import { JsonEditorTab } from "./tabs/JsonEditorTab";
 import "./Admin.css";
-
-const endpoint = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
-const parseEditorContent = (value) => {
-  try {
-    return JSON.parse(value);
-  } catch {
-    return defaultContent;
-  }
-};
-const authHeaders = (token) => ({ Authorization: `Bearer ${token}` });
 
 export function Admin() {
   const [token, setToken] = useState(() => sessionStorage.getItem("admin_token"));
+  const [adminUser, setAdminUser] = useState(null);
+  const [content, setContent] = useState(defaultContent);
+  const [savedContentJson, setSavedContentJson] = useState("");
   const [messages, setMessages] = useState([]);
-  const [content, setContent] = useState(JSON.stringify(defaultContent, null, 2));
-  const [projectForm, setProjectForm] = useState({ title: "", format: "AI project", visual: "", description: "", tags: "", link: "#", featured: false, published: true });
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [notice, setNotice] = useState("");
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [isSaving, setIsSaving] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  // Login form state
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const [loginLoading, setLoginLoading] = useState(false);
+
+  const notify = (message, type = "success") => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast((current) => (current?.message === message ? null : current));
+    }, 4000);
+  };
+
+  const isDirty = savedContentJson && JSON.stringify(content) !== savedContentJson;
 
   useEffect(() => {
-    if (!token) return;
-    Promise.all([
-      fetch(`${endpoint}/admin/messages`, { headers: authHeaders(token) }),
-      fetch(`${endpoint}/content`),
-    ]).then(async ([messagesResponse, contentResponse]) => {
-      if (!messagesResponse.ok) throw new Error("Your session has expired.");
-      setMessages(await messagesResponse.json());
-      const remoteContent = await contentResponse.json();
-      if (remoteContent) setContent(JSON.stringify(mergeContent(remoteContent), null, 2));
-    }).catch((error) => {
-      setNotice(error.message);
-      sessionStorage.removeItem("admin_token");
-      setToken(null);
-    });
-  }, [token]);
-
-  const login = async (event) => {
-    event.preventDefault();
-    setNotice("");
-    const response = await fetch(`${endpoint}/admin/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    const result = await response.json();
-    if (!response.ok) return setNotice(result.error || "Unable to sign in.");
-    sessionStorage.setItem("admin_token", result.token);
-    setToken(result.token);
-  };
-
-  const saveContent = async () => {
-    try {
-      const parsed = JSON.parse(content);
-      const response = await fetch(`${endpoint}/content`, {
-        method: "PUT",
-        headers: { ...authHeaders(token), "Content-Type": "application/json" },
-        body: JSON.stringify(parsed),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Unable to save content.");
-      setContent(JSON.stringify(result, null, 2));
-      setNotice("Portfolio content saved.");
-    } catch (error) {
-      setNotice(error instanceof SyntaxError ? "Content is not valid JSON." : error.message);
-    }
-  };
-
-  const updateLocalContent = (nextProjects) => {
-    try {
-      const parsed = JSON.parse(content);
-      setContent(JSON.stringify({ ...parsed, projects: nextProjects }, null, 2));
-    } catch {
-      setNotice("Fix the JSON before using the project manager.");
-    }
-  };
-
-  const addProject = (event) => {
-    event.preventDefault();
-    if (!projectForm.title.trim() || !projectForm.description.trim()) {
-      setNotice("Project title and description are required.");
+    if (!token) {
+      setAdminUser(null);
       return;
     }
-    const parsed = JSON.parse(content);
-    const project = {
-      ...projectForm,
-      title: projectForm.title.trim(),
-      description: projectForm.description.trim(),
-      tags: projectForm.tags.split(",").map((tag) => tag.trim()).filter(Boolean),
-      format: `${projectForm.format} / ${String((parsed.projects || []).length + 1).padStart(2, "0")}`,
+
+    let isMounted = true;
+
+    Promise.all([
+      adminApi.getMe(token),
+      adminApi.getContent().catch(() => null),
+      adminApi.getMessages(token).catch(() => []),
+    ])
+      .then(([userData, remoteContent, loadedMessages]) => {
+        if (!isMounted) return;
+        setAdminUser(userData);
+        if (remoteContent) {
+          const merged = mergeContent(remoteContent);
+          setContent(merged);
+          setSavedContentJson(JSON.stringify(merged));
+        } else {
+          setSavedContentJson(JSON.stringify(defaultContent));
+        }
+        setMessages(loadedMessages || []);
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+        notify(err.message || "Your session has expired.", "error");
+        sessionStorage.removeItem("admin_token");
+        setToken(null);
+      });
+
+    return () => {
+      isMounted = false;
     };
-    updateLocalContent([...(parsed.projects || []), project]);
-    setProjectForm({ title: "", format: "AI project", visual: "", description: "", tags: "", link: "#", featured: false, published: true });
-    setNotice("Project added locally. Save portfolio content to publish it.");
+  }, [token]);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoginLoading(true);
+    try {
+      const data = await adminApi.login(loginForm.email, loginForm.password);
+      sessionStorage.setItem("admin_token", data.token);
+      setToken(data.token);
+      setAdminUser(data.user);
+      notify("Welcome back! Signed in successfully.");
+    } catch (err) {
+      notify(err.message || "Unable to sign in.", "error");
+    } finally {
+      setLoginLoading(false);
+    }
   };
 
-  const removeProject = (index) => {
-    const parsed = JSON.parse(content);
-    if (!window.confirm(`Delete ${parsed.projects[index].title}?`)) return;
-    updateLocalContent(parsed.projects.filter((_, projectIndex) => projectIndex !== index));
+  const handleLogout = () => {
+    sessionStorage.removeItem("admin_token");
+    setToken(null);
+    setAdminUser(null);
+    notify("Signed out successfully.");
   };
 
-  const toggleProject = (index, field) => {
-    const parsed = JSON.parse(content);
-    updateLocalContent(parsed.projects.map((project, projectIndex) => projectIndex === index ? { ...project, [field]: !project[field] } : project));
+  const handleSaveToDb = async () => {
+    setIsSaving(true);
+    try {
+      const result = await adminApi.saveContent(token, content);
+      const merged = mergeContent(result);
+      setContent(merged);
+      setSavedContentJson(JSON.stringify(merged));
+      notify("All portfolio changes saved to MongoDB successfully!");
+    } catch (err) {
+      notify(err.message || "Failed to save content.", "error");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  const updateMessage = async (message, action) => {
-    const response = await fetch(`${endpoint}/admin/messages/${message.id}`, {
-      method: action === "delete" ? "DELETE" : "PATCH",
-      headers: action === "delete" ? authHeaders(token) : { ...authHeaders(token), "Content-Type": "application/json" },
-      ...(action === "delete" ? {} : { body: JSON.stringify({ is_read: !message.is_read }) }),
-    });
-    if (!response.ok) return setNotice("Unable to update this message.");
-    setMessages((current) => action === "delete"
-      ? current.filter((item) => item.id !== message.id)
-      : current.map((item) => item.id === message.id ? { ...item, is_read: !item.is_read } : item));
+  const handleToggleMessageRead = async (message) => {
+    try {
+      const updated = await adminApi.updateMessage(token, message.id, !message.is_read);
+      setMessages((prev) =>
+        prev.map((m) => (m.id === message.id ? { ...m, is_read: updated.is_read } : m)),
+      );
+      notify(updated.is_read ? "Message marked as read." : "Message marked as unread.");
+    } catch (err) {
+      notify(err.message, "error");
+    }
   };
 
-  if (!token) return (
-    <main className="admin-page"><form className="admin-login" onSubmit={login}>
-      <p className="admin-kicker">Private workspace</p><h1>Admin sign in</h1>
-      <label>Email<input type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} required /></label>
-      <label>Password<input type="password" value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} required /></label>
-      <button type="submit">Sign in</button>{notice && <p className="admin-error">{notice}</p>}
-    </form></main>
+  const handleMarkAllRead = async () => {
+    try {
+      await adminApi.markAllMessagesRead(token);
+      setMessages((prev) => prev.map((m) => ({ ...m, is_read: true })));
+      notify("All messages marked as read.");
+    } catch (err) {
+      notify(err.message, "error");
+    }
+  };
+
+  const handleDeleteMessage = async (message) => {
+    if (!window.confirm(`Delete message from ${message.name}?`)) return;
+    try {
+      await adminApi.deleteMessage(token, message.id);
+      setMessages((prev) => prev.filter((m) => m.id !== message.id));
+      notify("Message deleted.");
+    } catch (err) {
+      notify(err.message, "error");
+    }
+  };
+
+  if (!token) {
+    return (
+      <main className="lumo-login-viewport">
+        <div className="lumo-login-wrapper">
+          <div className="lumo-login-header">
+            <h1 className="lumo-login-title">Aaditya Acharya Admin</h1>
+            <p className="lumo-login-sub">Sign in to manage your portfolio.</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="lumo-login-card">
+            <div className="lumo-field-group">
+              <label htmlFor="username">Username / Email</label>
+              <input
+                id="username"
+                type="text"
+                placeholder="aadityaacharya6882@gmail.com"
+                value={loginForm.email}
+                onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
+                required
+                autoFocus
+                autoComplete="username"
+              />
+            </div>
+
+            <div className="lumo-field-group">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={loginForm.password}
+                onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                required
+                autoComplete="current-password"
+              />
+            </div>
+
+            <button type="submit" className="lumo-login-submit" disabled={loginLoading}>
+              {loginLoading ? "Signing in..." : "Sign in"}
+            </button>
+          </form>
+
+          <div className="lumo-login-back">
+            <a href="/">← Return to public portfolio</a>
+          </div>
+        </div>
+
+        {toast && <div className={`admin-toast ${toast.type}`}>{toast.message}</div>}
+      </main>
+    );
+  }
+
+  const unreadCount = messages.filter((m) => !m.is_read).length;
+
+  return (
+    <div className="lumo-admin-shell">
+      {/* Sidebar with CSS reference from lumotechglobal */}
+      <aside className="lumo-sidebar">
+        {/* Top Brand Header */}
+        <div className="lumo-brand-box" onClick={() => setActiveTab("dashboard")}>
+          <span className="lumo-brand-text">Aaditya Acharya</span>
+          <span className="lumo-brand-admin">admin</span>
+        </div>
+
+        {/* Navigation Items List tailored to Aaditya's portfolio */}
+        <nav className="lumo-nav-menu">
+          <button
+            type="button"
+            className={`lumo-nav-item ${activeTab === "dashboard" ? "active" : ""}`}
+            onClick={() => setActiveTab("dashboard")}
+          >
+            <span className="lumo-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+              </svg>
+            </span>
+            <span>Dashboard</span>
+          </button>
+
+          <button
+            type="button"
+            className={`lumo-nav-item ${activeTab === "projects" ? "active" : ""}`}
+            onClick={() => setActiveTab("projects")}
+          >
+            <span className="lumo-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="7" y1="8" x2="17" y2="8" />
+                <line x1="7" y1="12" x2="17" y2="12" />
+                <line x1="7" y1="16" x2="12" y2="16" />
+              </svg>
+            </span>
+            <span>Projects</span>
+            <span className="lumo-badge-count neutral">{content.projects?.length || 0}</span>
+          </button>
+
+          <button
+            type="button"
+            className={`lumo-nav-item ${activeTab === "messages" ? "active" : ""}`}
+            onClick={() => setActiveTab("messages")}
+          >
+            <span className="lumo-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+            </span>
+            <span>Messages</span>
+            {unreadCount > 0 && <span className="lumo-badge-count">{unreadCount}</span>}
+          </button>
+
+          <button
+            type="button"
+            className={`lumo-nav-item ${activeTab === "profile" ? "active" : ""}`}
+            onClick={() => setActiveTab("profile")}
+          >
+            <span className="lumo-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </span>
+            <span>Profile & Hero</span>
+          </button>
+
+          <button
+            type="button"
+            className={`lumo-nav-item ${activeTab === "about" ? "active" : ""}`}
+            onClick={() => setActiveTab("about")}
+          >
+            <span className="lumo-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+              </svg>
+            </span>
+            <span>About & Story</span>
+          </button>
+
+          <button
+            type="button"
+            className={`lumo-nav-item ${activeTab === "skills" ? "active" : ""}`}
+            onClick={() => setActiveTab("skills")}
+          >
+            <span className="lumo-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
+            </span>
+            <span>Skills & Tech</span>
+          </button>
+
+          <button
+            type="button"
+            className={`lumo-nav-item ${activeTab === "experience" ? "active" : ""}`}
+            onClick={() => setActiveTab("experience")}
+          >
+            <span className="lumo-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="2" y="7" width="20" height="14" rx="2" />
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+              </svg>
+            </span>
+            <span>Experience</span>
+          </button>
+
+          <button
+            type="button"
+            className={`lumo-nav-item ${activeTab === "visibility" ? "active" : ""}`}
+            onClick={() => setActiveTab("visibility")}
+          >
+            <span className="lumo-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </span>
+            <span>Visibility & SEO</span>
+          </button>
+
+          <button
+            type="button"
+            className={`lumo-nav-item ${activeTab === "security" ? "active" : ""}`}
+            onClick={() => setActiveTab("security")}
+          >
+            <span className="lumo-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+            </span>
+            <span>Security</span>
+          </button>
+
+          <button
+            type="button"
+            className={`lumo-nav-item ${activeTab === "json" ? "active" : ""}`}
+            onClick={() => setActiveTab("json")}
+          >
+            <span className="lumo-nav-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="16 18 22 12 16 6" />
+                <polyline points="8 6 2 12 8 18" />
+              </svg>
+            </span>
+            <span>Raw JSON</span>
+          </button>
+        </nav>
+
+        {/* Sidebar Footer Controls */}
+        <div className="lumo-sidebar-footer">
+          <div className="sidebar-action-row">
+            {isDirty && <span className="dirty-pill">● Unsaved</span>}
+            <button
+              type="button"
+              className={`lumo-save-action-btn ${isDirty ? "active-dirty" : ""}`}
+              onClick={handleSaveToDb}
+              disabled={isSaving}
+            >
+              {isSaving ? "Saving..." : isDirty ? "Save to DB" : "Saved"}
+            </button>
+          </div>
+
+          <a href="/" target="_blank" rel="noreferrer" className="lumo-sidebar-ext-link">
+            Live Portfolio ↗
+          </a>
+
+          <button type="button" className="lumo-nav-item logout-link" onClick={handleLogout}>
+            <span className="lumo-nav-icon">🚪</span>
+            <span>Log out</span>
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Viewport */}
+      <main className="lumo-main-viewport">
+        {activeTab === "dashboard" && (
+          <DashboardTab
+            content={content}
+            messages={messages}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === "projects" && (
+          <ProjectsTab
+            content={content}
+            updateContent={setContent}
+            notify={notify}
+            token={token}
+          />
+        )}
+
+        {activeTab === "messages" && (
+          <InboxTab
+            messages={messages}
+            onToggleRead={handleToggleMessageRead}
+            onDeleteMessage={handleDeleteMessage}
+            onMarkAllRead={handleMarkAllRead}
+          />
+        )}
+
+        {activeTab === "profile" && (
+          <ProfileTab
+            content={content}
+            updateContent={setContent}
+            notify={notify}
+            token={token}
+            onSaveToDb={handleSaveToDb}
+            isSaving={isSaving}
+            isDirty={isDirty}
+          />
+        )}
+
+        {activeTab === "about" && (
+          <AboutTab
+            content={content}
+            updateContent={setContent}
+          />
+        )}
+
+        {activeTab === "skills" && (
+          <SkillsTab
+            content={content}
+            updateContent={setContent}
+            notify={notify}
+            onSaveToDb={handleSaveToDb}
+            isSaving={isSaving}
+            isDirty={isDirty}
+          />
+        )}
+
+        {activeTab === "experience" && (
+          <ExperienceTab
+            content={content}
+            updateContent={setContent}
+            notify={notify}
+          />
+        )}
+
+        {activeTab === "visibility" && (
+          <VisibilityTab
+            content={content}
+            updateContent={setContent}
+          />
+        )}
+
+        {activeTab === "security" && (
+          <SecurityTab
+            token={token}
+            adminEmail={adminUser?.email}
+            notify={notify}
+          />
+        )}
+
+        {activeTab === "json" && (
+          <JsonEditorTab
+            content={content}
+            updateContent={setContent}
+            notify={notify}
+          />
+        )}
+      </main>
+
+      {toast && <div className={`admin-toast ${toast.type}`}>{toast.message}</div>}
+    </div>
   );
-
-  return <main className="admin-page">
-    <header className="admin-header"><div><p className="admin-kicker">Aaditya Acharya / CMS</p><h1>Control room</h1></div>
-      <button onClick={() => { sessionStorage.removeItem("admin_token"); setToken(null); }}>Sign out</button>
-    </header>
-    {notice && <p className="admin-notice">{notice}</p>}
-    <section className="admin-overview">
-      <article><strong>{parseEditorContent(content).projects?.length || 0}</strong><span>Projects</span></article>
-      <article><strong>{parseEditorContent(content).skills?.items?.length || 0}</strong><span>Skills</span></article>
-      <article><strong>{parseEditorContent(content).experience?.items?.length || 0}</strong><span>Experience entries</span></article>
-      <article><strong>{messages.filter((message) => !message.is_read).length}</strong><span>Unread messages</span></article>
-    </section>
-    <section className="project-manager"><div><p className="admin-kicker">Projects</p><h2>Manage featured work</h2></div>
-      <div className="managed-projects">{(parseEditorContent(content).projects || []).map((project, index) => <article key={`${project.title}-${index}`}><div><strong>{project.title}</strong><p>{project.description}</p></div><div className="message-actions"><button onClick={() => toggleProject(index, "published")}>{project.published === false ? "Draft" : "Published"}</button><button onClick={() => toggleProject(index, "featured")}>{project.featured ? "Featured" : "Feature"}</button><button onClick={() => removeProject(index)}>Delete</button></div></article>)}</div>
-      <form className="project-form" onSubmit={addProject}><input placeholder="Project title" value={projectForm.title} onChange={(event) => setProjectForm({ ...projectForm, title: event.target.value })} /><input placeholder="Visual label" value={projectForm.visual} onChange={(event) => setProjectForm({ ...projectForm, visual: event.target.value })} /><input placeholder="Technologies, comma separated" value={projectForm.tags} onChange={(event) => setProjectForm({ ...projectForm, tags: event.target.value })} /><input placeholder="Live or GitHub URL" value={projectForm.link} onChange={(event) => setProjectForm({ ...projectForm, link: event.target.value })} /><textarea placeholder="Project description" value={projectForm.description} onChange={(event) => setProjectForm({ ...projectForm, description: event.target.value })} /><button type="submit">Add project</button></form>
-    </section>
-    <section className="content-editor"><div><p className="admin-kicker">Global content</p><h2>Edit every public section</h2><p>Use the project manager above for common project changes. The JSON editor controls profile, sections, skills, experience, certifications, visibility, links, and advanced fields.</p></div>
-      <textarea value={content} onChange={(event) => setContent(event.target.value)} spellCheck="false" /><button onClick={saveContent}>Save portfolio content</button>
-    </section>
-    <section className="message-list"><div className="admin-section-heading"><p className="admin-kicker">Inbox</p><h2>{messages.length} messages</h2></div>
-      {messages.length === 0 ? <p>No messages yet.</p> : messages.map((message) => <article className={message.is_read ? "message read" : "message"} key={message.id}>
-        <div><span>{new Date(message.created_at).toLocaleDateString()}</span><h2>{message.subject}</h2><p>{message.name} / <a href={`mailto:${message.email}`}>{message.email}</a></p><p>{message.message}</p></div>
-        <div className="message-actions"><button onClick={() => updateMessage(message, "read")}>{message.is_read ? "Mark unread" : "Mark read"}</button><button onClick={() => updateMessage(message, "delete")}>Delete</button></div>
-      </article>)}
-    </section>
-  </main>;
 }

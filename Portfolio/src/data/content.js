@@ -11,7 +11,7 @@ export const defaultContent = {
   site: {
     name: "Aaditya Acharya",
     role: "AI Engineer",
-    email: "hello@aaditya.dev",
+    email: "aadityaacharya6882@gmail.com",
     whatsapp: "9741688299",
     github: "https://github.com/aaditya6882",
     linkedin: "https://www.linkedin.com/",

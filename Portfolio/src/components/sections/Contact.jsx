@@ -16,7 +16,7 @@ export const Contact = ({ content, site }) => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL || "http://localhost:4000/api"}/contact`,
+        `${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/contact`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -48,11 +48,12 @@ export const Contact = ({ content, site }) => {
         <div className={style.links}>
           <a href={`mailto:${site.email}`}><Icon name="mail" size={18} />{site.email}</a>
           <a
-            href={`https://wa.me/${site.whatsapp.replace(/\D/g, "")}`}
+            className={style.whatsappLink}
+            href={`https://wa.me/${(site.whatsapp || "").replace(/\D/g, "")}`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            WhatsApp
+            <Icon name="whatsapp" size={18} /> WhatsApp
           </a>
           <a
             href={site.github}

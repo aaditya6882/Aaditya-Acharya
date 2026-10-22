@@ -31,9 +31,17 @@ export const Navbar = ({ site, darkMode, onToggleTheme }) => {
             ))}
           </ul>
         </div>
-        <a className={StyleSheet.resumeLink} href={site.resume || "#contact"} download>
-          Download Resume
-        </a>
+        {(() => {
+          const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+          const downloadHref = site.resume && site.resume !== "#contact"
+            ? (site.resume.includes("/resume/view") ? site.resume.replace("/resume/view", "/resume/download") : site.resume)
+            : `${apiBase}/resume/download`;
+          return (
+            <a className={StyleSheet.resumeLink} href={downloadHref} download="Aaditya_Acharya_Resume.pdf">
+              Download Resume
+            </a>
+          );
+        })()}
         <button className={StyleSheet.themeBtn} onClick={onToggleTheme} aria-label="Toggle theme">
           <Icon name={darkMode ? "sun" : "moon"} size={20} />
         </button>
