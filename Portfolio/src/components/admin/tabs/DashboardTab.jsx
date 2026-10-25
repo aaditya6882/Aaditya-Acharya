@@ -79,7 +79,7 @@ export function DashboardTab({ content, messages, setActiveTab }) {
           </div>
           <div className="lumo-card-value">{expCount}</div>
           <div className="lumo-card-subtext">
-            Independent AI Lab · Kaggle Expert · Procom '24
+            {(content.experience?.items || []).slice(0, 3).map((item) => item.company || item.title).filter(Boolean).join(" · ") || "No experience milestones added"}
           </div>
         </div>
 

@@ -5,7 +5,7 @@ export function Experience({ content }) {
     <section className={`${styles.experienceSection} motion-reveal`} id="experience">
       <div className={styles.inner}>
         <div className={`${styles.headingRow} motion-reveal`}>
-          <h2>{content.eyebrow === "Experience" ? "Professional Experience" : content.title}</h2>
+          <h2>{content?.title || "Professional Experience"}</h2>
         </div>
         <div className={styles.list}>
           {content.items.map((item, index) => (

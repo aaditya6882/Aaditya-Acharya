@@ -10,7 +10,9 @@ export function Education({ content }) {
             <h2>Education</h2>
             <h3>{content.education.title}</h3>
             <p>{content.education.text}</p>
-            <p className={styles.detail}>Relevant Courses: Algorithms Design and Analysis, Object-Oriented Programming, Linear Algebra, Probability and Statistics, Machine Learning, Artificial Neural Networks, Database Systems, Information Retrieval, Fundamentals of Software Engineering.</p>
+            {content.education.courses && (
+              <p className={styles.detail}>Relevant Courses: {content.education.courses}</p>
+            )}
           </div>
           <div>
             <h2>Certifications & Awards</h2>
