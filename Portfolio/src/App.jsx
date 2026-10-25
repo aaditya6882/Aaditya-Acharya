@@ -19,6 +19,14 @@ function App() {
   useEffect(() => {
     if (window.location.pathname === "/admin") return;
     document.documentElement.classList.add("motion-ready");
+    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/content`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((remoteContent) => remoteContent && setContent(mergeContent(remoteContent)))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (window.location.pathname === "/admin") return;
     const revealObserver = new IntersectionObserver(
       (entries) => entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -28,16 +36,18 @@ function App() {
       }),
       { threshold: 0.12, rootMargin: "0px 0px -48px" },
     );
-    document.querySelectorAll(".motion-reveal").forEach((element) => revealObserver.observe(element));
-    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/content`)
-      .then((response) => (response.ok ? response.json() : null))
-      .then((remoteContent) => remoteContent && setContent(mergeContent(remoteContent)))
-      .catch(() => {});
+    // Give DOM a microtask tick to mount new elements from content update
+    const timeout = setTimeout(() => {
+      document.querySelectorAll(".motion-reveal:not(.is-visible)").forEach((element) => {
+        revealObserver.observe(element);
+      });
+    }, 50);
+
     return () => {
+      clearTimeout(timeout);
       revealObserver.disconnect();
-      document.documentElement.classList.remove("motion-ready");
     };
-  }, []);
+  }, [content]);
 
   if (window.location.pathname === "/admin") return <Admin />;
 
